@@ -11,12 +11,14 @@ public class PostStore {
 
     private static final PostStore INST = new PostStore();
 
+    private volatile int currentId = 1;
+
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
     private PostStore() {
-        posts.put(1, new Post(1, "Junior Java Job", "Junior", Date.valueOf("2022-01-01")));
-        posts.put(2, new Post(2, "Middle Java Job", "Middle", Date.valueOf("2022-01-01")));
-        posts.put(3, new Post(3, "Senior Java Job", "Senior", Date.valueOf("2022-01-01")));
+        create(new Post(1, "Junior Java Job", "Junior", Date.valueOf("2022-01-01")));
+        create(new Post(2, "Middle Java Job", "Middle", Date.valueOf("2022-01-01")));
+        create(new Post(3, "Senior Java Job", "Senior", Date.valueOf("2022-01-01")));
     }
 
     public static PostStore instOf() {
@@ -25,5 +27,10 @@ public class PostStore {
 
     public Collection<Post> findAll() {
         return posts.values();
+    }
+
+    public synchronized Post create(Post post) {
+        post.setId(currentId);
+        return posts.putIfAbsent(currentId++, post);
     }
 }

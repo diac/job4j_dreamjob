@@ -38,12 +38,16 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Имя</th>
+        <th scope="col">Инфо</th>
+        <th scope="col">Дата</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="post: ${posts}">
         <td th:text="${post.id}" />
         <td th:text="${post.name}" />
+        <td th:text="${post.description}">
+        <td th:text="${#dates.format(post.created, 'dd-MM-yyyy')}">
       </tr>
       </tbody>
     </table>

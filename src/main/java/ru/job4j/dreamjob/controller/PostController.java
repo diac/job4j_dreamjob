@@ -37,7 +37,8 @@ public final class PostController {
                         0,
                         "Заполните название",
                         "Заполните описание",
-                        LocalDateTime.now()
+                        LocalDateTime.now(),
+                        false
         ));
         return "addPost";
     }
@@ -47,7 +48,8 @@ public final class PostController {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        postService.add(new Post(id, name, description, LocalDateTime.now()));
+        boolean visible = Boolean.valueOf(req.getParameter("visible"));
+        postService.add(new Post(id, name, description, LocalDateTime.now(), visible));
         return "redirect:/posts";
     }
 

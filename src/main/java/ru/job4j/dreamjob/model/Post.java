@@ -16,11 +16,12 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(int id, String name, String description, LocalDateTime created) {
+    public Post(int id, String name, String description, LocalDateTime created, boolean visible) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
+        this.visible = visible;
     }
 
     public int getId() {

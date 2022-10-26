@@ -19,9 +19,9 @@ public final class PostStore {
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
     private PostStore() {
-        add(new Post(1, "Junior Java Job", "Junior", LocalDateTime.now()));
-        add(new Post(2, "Middle Java Job", "Middle", LocalDateTime.now()));
-        add(new Post(3, "Senior Java Job", "Senior", LocalDateTime.now()));
+        add(new Post(1, "Junior Java Job", "Junior", LocalDateTime.now(), true));
+        add(new Post(2, "Middle Java Job", "Middle", LocalDateTime.now(), true));
+        add(new Post(3, "Senior Java Job", "Senior", LocalDateTime.now(), true));
     }
 
     public Collection<Post> findAll() {

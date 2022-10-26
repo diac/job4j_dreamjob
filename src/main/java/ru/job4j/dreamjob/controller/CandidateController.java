@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.service.CandidateService;
+import ru.job4j.dreamjob.service.CityService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -18,9 +20,11 @@ import java.time.LocalDateTime;
 public final class CandidateController {
 
     private final CandidateService candidateService;
+    private final CityService cityService;
 
-    public CandidateController(CandidateService candidateService) {
+    public CandidateController(CandidateService candidateService, CityService cityService) {
         this.candidateService = candidateService;
+        this.cityService = cityService;
     }
 
     @GetMapping("/candidates")
@@ -31,15 +35,7 @@ public final class CandidateController {
 
     @GetMapping("/formAddCandidate")
     public String addCandidate(Model model) {
-        model.addAttribute(
-                "candidate",
-                new Candidate(
-                        0,
-                        "Заполните имя",
-                        "Заполните описание",
-                        LocalDateTime.now()
-                )
-        );
+        model.addAttribute("cities", cityService.getAllCities());
         return "addCandidate";
     }
 
@@ -48,18 +44,21 @@ public final class CandidateController {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         String desc = req.getParameter("desc");
-        candidateService.add(new Candidate(id, name, desc, LocalDateTime.now()));
+        City city = cityService.findById(Integer.parseInt(req.getParameter("city.id")));
+        candidateService.add(new Candidate(id, name, desc, LocalDateTime.now(), city));
         return "redirect:/candidates";
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
+        model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }
 
     @PostMapping("/updateCandidate")
     public String updateCandidate(@ModelAttribute Candidate candidate) {
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.update(candidate);
         return "redirect:/candidates";
     }

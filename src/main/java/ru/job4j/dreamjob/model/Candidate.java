@@ -9,15 +9,17 @@ public class Candidate {
     private String name;
     private String desc;
     private LocalDateTime created;
+    private City city;
 
     public Candidate() {
     }
 
-    public Candidate(int id, String name, String desc, LocalDateTime created) {
+    public Candidate(int id, String name, String desc, LocalDateTime created, City city) {
         this.id = id;
         this.name = name;
         this.desc = desc;
         this.created = created;
+        this.city = city;
     }
 
     public int getId() {
@@ -50,6 +52,14 @@ public class Candidate {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override

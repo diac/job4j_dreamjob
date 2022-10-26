@@ -52,6 +52,12 @@
             <label for="candidateDescription">Описание</label>
             <textarea id="candidateDescription" class="form-control" th:field="*{desc}"></textarea>
           </div>
+          <div class="form-group">
+            <label for="city.id">Город</label>
+            <select class="form-control" id="city.id" th:field="*{city.id}">
+              <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+            </select>
+          </div>
           <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
       </div>

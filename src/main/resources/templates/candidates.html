@@ -17,13 +17,16 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>Работа мечты: Кандидаты</title>
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Работа мечты</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -42,16 +45,17 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
-                <th scope="col">Инфо</th>
-                <th scope="col">Дата</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="candidate: ${candidates}">
                 <td th:text="${candidate.id}">
-                <td th:text="${candidate.name}">
-                <td th:text="${candidate.desc}">
-                <td th:text="${#temporals.format(candidate.created, 'dd-MM-yyyy')}">
+                <td>
+                    <a th:href="@{|/formUpdateCandidate/${candidate.id}|}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <span th:text="${candidate.name}"></span>
+                </td>
             </tr>
             </tbody>
         </table>

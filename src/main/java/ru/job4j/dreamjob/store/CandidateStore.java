@@ -33,4 +33,16 @@ public class CandidateStore {
         candidate.setId(currentId);
         return candidates.putIfAbsent(currentId++, candidate);
     }
+
+    public Candidate add(Candidate candidate) {
+        return candidates.putIfAbsent(candidate.getId(), candidate);
+    }
+
+    public Candidate findById(int id) {
+        return candidates.get(id);
+    }
+
+    public Candidate update(Candidate candidate) {
+        return candidates.replace(candidate.getId(), candidate);
+    }
 }

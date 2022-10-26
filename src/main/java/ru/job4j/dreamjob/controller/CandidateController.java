@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.store.CandidateStore;
+import ru.job4j.dreamjob.service.CandidateService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Controller
 public class CandidateController {
 
-    private final CandidateStore candidateStore = CandidateStore.instOf();
+    private final CandidateService candidateService = CandidateService.getInstance();
 
     @GetMapping("/candidates")
     public String candidates(Model model) {
-        model.addAttribute("candidates", candidateStore.findAll());
+        model.addAttribute("candidates", candidateService.findAll());
         return "candidates";
     }
 
@@ -42,19 +42,19 @@ public class CandidateController {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         String desc = req.getParameter("desc");
-        candidateStore.add(new Candidate(id, name, desc, LocalDateTime.now()));
+        candidateService.add(new Candidate(id, name, desc, LocalDateTime.now()));
         return "redirect:/candidates";
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
-        model.addAttribute("candidate", candidateStore.findById(id));
+        model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }
 
     @PostMapping("/updateCandidate")
     public String updateCandidate(@ModelAttribute Candidate candidate) {
-        candidateStore.update(candidate);
+        candidateService.update(candidate);
         return "redirect:/candidates";
     }
 }

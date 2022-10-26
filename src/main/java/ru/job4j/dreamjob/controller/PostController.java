@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.controller;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 @Controller
-public class PostController {
+@ThreadSafe
+public final class PostController {
 
     private final PostService postService;
 

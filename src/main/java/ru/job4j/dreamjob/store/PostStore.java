@@ -33,4 +33,8 @@ public class PostStore {
         post.setId(currentId);
         return posts.putIfAbsent(currentId++, post);
     }
+
+    public Post add(Post post) {
+        return posts.putIfAbsent(post.getId(), post);
+    }
 }

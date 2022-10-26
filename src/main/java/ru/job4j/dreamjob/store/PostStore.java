@@ -1,42 +1,36 @@
 package ru.job4j.dreamjob.store;
 
+import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Post;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Repository
 public class PostStore {
 
-    private static final PostStore INST = new PostStore();
-
-    private volatile int currentId = 1;
+    private final AtomicInteger ids = new AtomicInteger(0);
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
     private PostStore() {
-        create(new Post(1, "Junior Java Job", "Junior", LocalDateTime.now()));
-        create(new Post(2, "Middle Java Job", "Middle", LocalDateTime.now()));
-        create(new Post(3, "Senior Java Job", "Senior", LocalDateTime.now()));
-    }
-
-    public static PostStore instOf() {
-        return INST;
+        add(new Post(1, "Junior Java Job", "Junior", LocalDateTime.now()));
+        add(new Post(2, "Middle Java Job", "Middle", LocalDateTime.now()));
+        add(new Post(3, "Senior Java Job", "Senior", LocalDateTime.now()));
     }
 
     public Collection<Post> findAll() {
         return posts.values();
     }
 
-    public synchronized Post create(Post post) {
-        post.setId(currentId);
-        return posts.putIfAbsent(currentId++, post);
-    }
 
     public Post add(Post post) {
+        post.setId(ids.incrementAndGet());
         return posts.putIfAbsent(post.getId(), post);
-    }
+   }
 
     public Post findById(int id) {
         return posts.get(id);

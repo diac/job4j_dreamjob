@@ -42,7 +42,7 @@
         Новый кандидат
       </div>
       <div class="card-body">
-        <form th:action="@{/updateCandidate}" method="post" th:object="${candidate}">
+        <form th:action="@{/updateCandidate}" method="post" th:object="${candidate}" enctype="multipart/form-data">
           <input type="hidden" name="id" th:field="*{id}"/>
           <div class="form-group">
             <label for="candidateName">Имя</label>
@@ -57,6 +57,10 @@
             <select class="form-control" id="city.id" th:field="*{city.id}">
               <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
             </select>
+          </div>
+          <div class="form-group">
+            <label for="file">Фотография</label>
+            <input type="file" class="form-control" name="file" id="file">
           </div>
           <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>

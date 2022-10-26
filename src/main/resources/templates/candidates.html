@@ -45,6 +45,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
+                <th scope="col">Город</th>
+                <th scope="col">Фото</th>
             </tr>
             </thead>
             <tbody>
@@ -57,6 +59,9 @@
                     <span th:text="${candidate.name}"></span>
                 </td>
                 <td th:text="${candidate.city.name}"/>
+                <td>
+                    <img th:width="150" th:high="150" th:src="@{|/photoCandidate/${candidate.id}|}">
+                </td>
             </tr>
             </tbody>
         </table>

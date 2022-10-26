@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.store.CandidateStore;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Controller
@@ -30,7 +29,7 @@ public class CandidateController {
                         0,
                         "Заполните имя",
                         "Заполните описание",
-                        Date.valueOf(LocalDateTime.now().toLocalDate())
+                        LocalDateTime.now()
                 )
         );
         return "addCandidate";

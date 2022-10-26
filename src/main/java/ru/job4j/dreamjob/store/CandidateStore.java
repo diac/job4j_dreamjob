@@ -2,7 +2,7 @@ package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.model.Candidate;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,9 +16,9 @@ public class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private CandidateStore() {
-        create(new Candidate(1, "John Smith", "Extremely capable but emotionally unstable", Date.valueOf("2022-01-01")));
-        create(new Candidate(2, "Bob Brown", "Very disciplined but lacks ambition", Date.valueOf("2022-01-01")));
-        create(new Candidate(3, "Bill Miller", "Mostly unreliable but has some useful connections", Date.valueOf("2022-01-01")));
+        create(new Candidate(1, "John Smith", "Extremely capable but emotionally unstable", LocalDateTime.now()));
+        create(new Candidate(2, "Bob Brown", "Very disciplined but lacks ambition", LocalDateTime.now()));
+        create(new Candidate(3, "Bill Miller", "Mostly unreliable but has some useful connections", LocalDateTime.now()));
     }
 
     public static CandidateStore instOf() {

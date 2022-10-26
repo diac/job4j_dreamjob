@@ -44,9 +44,12 @@
             <div class="card-body">
                 <form method="post" th:object="${post}">
                     <div class="form-group">
-                        <label>Имя
-                            <input type="text" class="form-control" th:field="*{name}">
-                        </label>
+                        <label for="postName">Имя</label>
+                        <input id="postName" type="text" class="form-control" th:field="*{name}">
+                    </div>
+                    <div class="form-group">
+                        <label for="postDescription">Описание</label>
+                        <textarea id="postDescription" class="form-control" th:field="*{description}"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

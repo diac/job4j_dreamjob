@@ -11,11 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.service.CandidateService;
 import ru.job4j.dreamjob.service.CityService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -44,12 +42,9 @@ public final class CandidateController {
     }
 
     @PostMapping("/createCandidate")
-    public String storeCandidate(HttpServletRequest req, @RequestParam("file") MultipartFile file) throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String name = req.getParameter("name");
-        String desc = req.getParameter("desc");
-        City city = cityService.findById(Integer.parseInt(req.getParameter("city.id")));
-        Candidate candidate = new Candidate(id, name, desc, LocalDateTime.now(), city);
+    public String storeCandidate(@ModelAttribute Candidate candidate, @RequestParam("file") MultipartFile file) throws IOException {
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
+        candidate.setCreated(LocalDateTime.now());
         candidate.setPhoto(file.getBytes());
         candidateService.add(candidate);
         return "redirect:/candidates";

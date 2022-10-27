@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.store;
 
+import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class PostDBStore {
+@ThreadSafe
+public final class PostDBStore {
 
     private final BasicDataSource pool;
 
@@ -50,8 +52,8 @@ public class PostDBStore {
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("""
-                             INSERT INTO 
-                                post(name, description, visible, city_id, created) 
+                             INSERT INTO
+                                post(name, description, visible, city_id, created)
                              VALUES (?, ?, ?, ?, NOW())""",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {

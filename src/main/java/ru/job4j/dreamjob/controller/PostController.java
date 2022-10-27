@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 @Controller
@@ -40,13 +38,10 @@ public final class PostController {
     }
 
     @PostMapping("/createPost")
-    public String storePost(HttpServletRequest req) {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String name = req.getParameter("name");
-        String description = req.getParameter("description");
-        boolean visible = Boolean.valueOf(req.getParameter("visible"));
-        City city = cityService.findById(Integer.parseInt(req.getParameter("city.id")));
-        postService.add(new Post(id, name, description, LocalDateTime.now(), visible, city));
+    public String storePost(@ModelAttribute Post post) {
+        post.setCreated(LocalDateTime.now());
+        post.setCity(cityService.findById(post.getCity().getId()));
+        postService.add(post);
         return "redirect:/posts";
     }
 

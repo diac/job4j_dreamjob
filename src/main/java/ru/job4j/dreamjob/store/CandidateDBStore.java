@@ -8,10 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.model.City;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +58,11 @@ public final class CandidateDBStore {
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
-            ps.setInt(3, candidate.getCity().getId());
+            if (candidate.getCity() != null) {
+                ps.setInt(3, candidate.getCity().getId());
+            } else {
+                ps.setNull(3, Types.NULL);
+            }
             ps.setBytes(4, candidate.getPhoto());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
@@ -92,7 +93,11 @@ public final class CandidateDBStore {
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
-            ps.setInt(3, candidate.getCity().getId());
+            if (candidate.getCity() != null) {
+                ps.setInt(3, candidate.getCity().getId());
+            } else {
+                ps.setNull(3, Types.NULL);
+            }
             ps.setBytes(4, candidate.getPhoto());
             ps.setInt(5, candidate.getId());
             ps.execute();

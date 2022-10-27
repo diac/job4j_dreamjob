@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,11 @@ public final class PostDBStore {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setBoolean(3, post.isVisible());
-            ps.setInt(4, post.getCity().getId());
+            if (post.getCity() != null) {
+                ps.setInt(4, post.getCity().getId());
+            } else {
+                ps.setNull(4, Types.NULL);
+            }
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -92,7 +94,11 @@ public final class PostDBStore {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setBoolean(3, post.isVisible());
-            ps.setInt(4, post.getCity().getId());
+            if (post.getCity() != null) {
+                ps.setInt(4, post.getCity().getId());
+            } else {
+                ps.setNull(4, Types.NULL);
+            }
             ps.setInt(5, post.getId());
             ps.execute();
         } catch (Exception e) {

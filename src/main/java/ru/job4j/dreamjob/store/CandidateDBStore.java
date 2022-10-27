@@ -54,7 +54,8 @@ public final class CandidateDBStore {
                         INSERT INTO
                             candidate(name, "desc", city_id, photo, created)
                         VALUES (?, ?, ?, ?, NOW())
-                        """)
+                        """,
+                        PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());

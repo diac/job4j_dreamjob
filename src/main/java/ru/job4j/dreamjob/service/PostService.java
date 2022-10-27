@@ -13,12 +13,20 @@ public final class PostService {
 
     private final PostDBStore store;
 
+    private final CityService cityService = new CityService();
+
     public PostService(PostDBStore store) {
         this.store = store;
     }
 
     public List<Post> findAll() {
-        return store.findAll().stream().toList();
+        var posts = store.findAll();
+        posts.forEach(
+                post -> post.setCity(
+                        cityService.findById(post.getCity().getId())
+                )
+        );
+        return posts;
     }
 
     public Post add(Post post) {
@@ -26,7 +34,9 @@ public final class PostService {
     }
 
     public Post findById(int id) {
-        return store.findById(id);
+        var post = store.findById(id);
+        post.setCity(cityService.findById(post.getCity().getId()));
+        return post;
     }
 
     public Post update(Post post) {

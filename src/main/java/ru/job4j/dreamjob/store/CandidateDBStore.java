@@ -54,7 +54,7 @@ public final class CandidateDBStore {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(candidateFromResultset(it));
+                    candidates.add(candidateFromResultSet(it));
                 }
             }
         } catch (SQLException e) {
@@ -110,7 +110,7 @@ public final class CandidateDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return candidateFromResultset(it);
+                    return candidateFromResultSet(it);
                 }
             }
         } catch (SQLException e) {
@@ -119,20 +119,14 @@ public final class CandidateDBStore {
         return null;
     }
 
-    private Candidate candidateFromResultset(ResultSet it) {
-        Candidate candidate = null;
-        try {
-            candidate = new Candidate(
-                    it.getInt("id"),
-                    it.getString("name"),
-                    it.getString("desc"),
-                    it.getTimestamp("created").toLocalDateTime(),
-                    new City(it.getInt("city_id"), null),
-                    it.getBytes("photo")
-            );
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
-        }
-        return candidate;
+    private Candidate candidateFromResultSet(ResultSet it) throws SQLException {
+        return new Candidate(
+                it.getInt("id"),
+                it.getString("name"),
+                it.getString("desc"),
+                it.getTimestamp("created").toLocalDateTime(),
+                new City(it.getInt("city_id"), null),
+                it.getBytes("photo")
+        );
     }
 }

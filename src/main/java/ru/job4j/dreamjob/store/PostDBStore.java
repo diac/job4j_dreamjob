@@ -52,14 +52,7 @@ public final class PostDBStore {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            new City(it.getInt("city_id"), null)
-                    ));
+                    posts.add(postFromResultSet(it));
                 }
             }
         } catch (Exception e) {
@@ -121,19 +114,29 @@ public final class PostDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            new City(it.getInt("city_id"), null)
-                    );
+                    return postFromResultSet(it);
                 }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
         return null;
+    }
+
+    private Post postFromResultSet(ResultSet it) {
+        Post post = null;
+        try {
+            post = new Post(
+                    it.getInt("id"),
+                    it.getString("name"),
+                    it.getString("description"),
+                    it.getTimestamp("created").toLocalDateTime(),
+                    it.getBoolean("visible"),
+                    new City(it.getInt("city_id"), null)
+            );
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+        }
+        return post;
     }
 }

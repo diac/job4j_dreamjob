@@ -63,7 +63,7 @@ public final class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return posts;
     }
@@ -88,7 +88,7 @@ public final class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return post;
     }
@@ -109,7 +109,7 @@ public final class PostDBStore {
             ps.setInt(5, post.getId());
             ps.execute();
         } catch (Exception e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return findById(post.getId());
     }
@@ -132,7 +132,7 @@ public final class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return null;
     }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @ThreadSafe
-public final class PostService {
+public class PostService {
 
     private final PostDBStore store;
 

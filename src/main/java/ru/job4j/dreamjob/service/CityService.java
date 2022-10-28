@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Service
 @ThreadSafe
-public final class CityService {
+public class CityService {
 
     private final Map<Integer, City> cities = new HashMap<>();
 

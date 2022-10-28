@@ -16,6 +16,27 @@ import java.util.List;
 @ThreadSafe
 public final class PostDBStore {
 
+    private static final String FIND_ALL_QUERY = "SELECT * FROM post";
+
+    private static final String ADD_QUERY = """
+            INSERT INTO
+               post(name, description, visible, city_id, created)
+            VALUES (?, ?, ?, ?, NOW())""";
+
+    private static final String UPDATE_QUERY = """
+            UPDATE
+                post
+            SET
+                name = ?,
+                description = ?,
+                visible = ?,
+                city_id = ?
+            WHERE
+                id = ?
+            """;
+
+    private static final String FIND_BY_ID_QUERY = "SELECT * FROM post WHERE id = ?";
+
     private final BasicDataSource pool;
 
     private static final Logger LOG = LogManager.getLogger(PostDBStore.class.getName());
@@ -27,7 +48,7 @@ public final class PostDBStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
+             PreparedStatement ps = cn.prepareStatement(FIND_ALL_QUERY)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -48,12 +69,9 @@ public final class PostDBStore {
     }
 
     public Post add(Post post) {
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("""
-                             INSERT INTO
-                                post(name, description, visible, city_id, created)
-                             VALUES (?, ?, ?, ?, NOW())""",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
+        try (
+                Connection cn = pool.getConnection();
+                PreparedStatement ps = cn.prepareStatement(ADD_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
@@ -78,18 +96,7 @@ public final class PostDBStore {
     public Post update(Post post) {
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("""
-                        UPDATE
-                            post
-                        SET
-                            name = ?,
-                            description = ?,
-                            visible = ?,
-                            city_id = ?
-                        WHERE
-                            id = ?
-                        """
-                )
+                PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
@@ -109,7 +116,7 @@ public final class PostDBStore {
 
     public Post findById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(FIND_BY_ID_QUERY)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {

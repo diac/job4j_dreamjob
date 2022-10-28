@@ -54,14 +54,7 @@ public final class CandidateDBStore {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("desc"),
-                            it.getTimestamp("created").toLocalDateTime(),
-                            new City(it.getInt("city_id"), null),
-                            it.getBytes("photo")
-                    ));
+                    candidates.add(candidateFromResultset(it));
                 }
             }
         } catch (SQLException e) {
@@ -125,21 +118,29 @@ public final class CandidateDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    Candidate candidate = new Candidate(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("desc"),
-                            it.getTimestamp("created").toLocalDateTime(),
-                            new City(it.getInt("city_id"), null),
-                            it.getBytes("photo")
-                    );
-                    candidate.setPhoto(it.getBytes("photo"));
-                    return candidate;
+                    return candidateFromResultset(it);
                 }
             }
         } catch (SQLException e) {
             LOG.error(e.getMessage());
         }
         return null;
+    }
+
+    private Candidate candidateFromResultset(ResultSet it) {
+        Candidate candidate = null;
+        try {
+            candidate = new Candidate(
+                    it.getInt("id"),
+                    it.getString("name"),
+                    it.getString("desc"),
+                    it.getTimestamp("created").toLocalDateTime(),
+                    new City(it.getInt("city_id"), null),
+                    it.getBytes("photo")
+            );
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+        }
+        return candidate;
     }
 }

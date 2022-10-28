@@ -116,20 +116,14 @@ public final class PostDBStore {
         return null;
     }
 
-    private Post postFromResultSet(ResultSet it) {
-        Post post = null;
-        try {
-            post = new Post(
-                    it.getInt("id"),
-                    it.getString("name"),
-                    it.getString("description"),
-                    it.getTimestamp("created").toLocalDateTime(),
-                    it.getBoolean("visible"),
-                    new City(it.getInt("city_id"), null)
-            );
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
-        }
-        return post;
+    private Post postFromResultSet(ResultSet it) throws SQLException {
+        return new Post(
+                it.getInt("id"),
+                it.getString("name"),
+                it.getString("description"),
+                it.getTimestamp("created").toLocalDateTime(),
+                it.getBoolean("visible"),
+                new City(it.getInt("city_id"), null)
+        );
     }
 }

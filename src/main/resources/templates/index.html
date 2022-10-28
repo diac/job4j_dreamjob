@@ -35,11 +35,11 @@
                 <a class="nav-item nav-link" th:href="@{/formAddPost}">Добавить вакансию</a>
                 <a class="nav-item nav-link" th:href="@{/candidates}">Кандидаты</a>
                 <a class="nav-item nav-link" th:href="@{/formAddCandidate}">Добавить кандидата</a>
-                <a class="nav-item nav-link" th:if="${user == null}" th:href="@{/loginPage}">
-                    <span>Гость</span>
+                <a class="nav-item nav-link" th:if="${user.email == 'Гость'}" th:href="@{/loginPage}">
+                    <span th:text="${user.email}"></span>
                     <span> | Войти</span>
                 </a>
-                <a class="nav-item nav-link" th:if="${user != null}" th:href="@{/logout}">
+                <a class="nav-item nav-link" th:if="${user.email != 'Гость'}" th:href="@{/logout}">
                     <span th:text="${user.email}"></span>
                     <span> | Выйти</span>
                 </a>

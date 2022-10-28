@@ -19,6 +19,25 @@ import java.util.Optional;
 @ThreadSafe
 public final class UserDBStore {
 
+    private static final String FIND_ALL_QUERY = "SELECT * FROM users";
+
+    private static final String ADD_QUERY = """
+            INSERT INTO
+                users(email, password)
+            VALUES (?, ?)
+            """;
+
+    private static final String UPDATE_QUERY = """
+            UPDATE
+                users
+            SET
+                email = ?,
+                password = ?
+            WHERE
+                id = ?""";
+
+    private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
+
     private final BasicDataSource pool;
 
     private static final Logger LOG = LogManager.getLogger(UserDBStore.class.getName());
@@ -31,7 +50,7 @@ public final class UserDBStore {
         List<User> users = new ArrayList<>();
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("SELECT * FROM users")
+                PreparedStatement ps = cn.prepareStatement(FIND_ALL_QUERY)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 users.add(new User(
@@ -50,13 +69,7 @@ public final class UserDBStore {
         Optional<User> result = Optional.empty();
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("""
-                                INSERT INTO
-                                    users(email, password)
-                                VALUES (?, ?)
-                                """,
-                        PreparedStatement.RETURN_GENERATED_KEYS
-                )
+                PreparedStatement ps = cn.prepareStatement(ADD_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
@@ -76,14 +89,7 @@ public final class UserDBStore {
     public User update(User user) {
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("""
-                        UPDATE
-                            users
-                        SET
-                            email = ?,
-                            password = ?
-                        WHERE
-                            id = ?""")
+                PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
         ) {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
@@ -98,7 +104,7 @@ public final class UserDBStore {
     public User findById(int id) {
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("SELECT * FROM users WHERE id = ?")
+                PreparedStatement ps = cn.prepareStatement(FIND_BY_ID_QUERY)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {

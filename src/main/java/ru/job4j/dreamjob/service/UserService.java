@@ -30,7 +30,7 @@ public final class UserService {
         return store.findById(id);
     }
 
-    public User update(User user) {
+    public boolean update(User user) {
         return store.update(user);
     }
 }

@@ -86,7 +86,8 @@ public final class UserDBStore {
         return result;
     }
 
-    public User update(User user) {
+    public boolean update(User user) {
+        boolean result = false;
         try (
                 Connection cn = pool.getConnection();
                 PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
@@ -94,11 +95,11 @@ public final class UserDBStore {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ps.setInt(3, user.getId());
-            ps.execute();
+            result = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             LOG.error(e.getMessage());
         }
-        return findById(user.getId());
+        return result;
     }
 
     public User findById(int id) {

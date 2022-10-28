@@ -16,6 +16,28 @@ import java.util.List;
 @ThreadSafe
 public final class CandidateDBStore {
 
+    private static final String FIND_ALL_QUERY = "SELECT * FROM candidate";
+
+    private static final String ADD_QUERY = """
+            INSERT INTO
+                candidate(name, "desc", city_id, photo, created)
+            VALUES (?, ?, ?, ?, NOW())
+            """;
+
+    private static final String UPDATE_QUERY = """
+            UPDATE
+                candidate
+            SET
+                name = ?,
+                "desc" = ?,
+                city_id = ?,
+                photo = ?
+            WHERE
+                id = ?
+            """;
+
+    private static final String FIND_BY_ID_QUERY = "SELECT * FROM candidate WHERE id = ?";
+
     private final BasicDataSource pool;
 
     private static final Logger LOG = LogManager.getLogger(CandidateDBStore.class.getName());
@@ -28,7 +50,7 @@ public final class CandidateDBStore {
         List<Candidate> candidates = new ArrayList<>();
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate")
+                PreparedStatement ps = cn.prepareStatement(FIND_ALL_QUERY)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -51,12 +73,7 @@ public final class CandidateDBStore {
     public Candidate add(Candidate candidate) {
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("""
-                        INSERT INTO
-                            candidate(name, "desc", city_id, photo, created)
-                        VALUES (?, ?, ?, ?, NOW())
-                        """,
-                        PreparedStatement.RETURN_GENERATED_KEYS)
+                PreparedStatement ps = cn.prepareStatement(ADD_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
@@ -81,17 +98,7 @@ public final class CandidateDBStore {
     public Candidate update(Candidate candidate) {
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("""
-                        UPDATE
-                            candidate
-                        SET
-                            name = ?,
-                            "desc" = ?,
-                            city_id = ?,
-                            photo = ?
-                        WHERE
-                            id = ?
-                        """)
+                PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
@@ -112,7 +119,7 @@ public final class CandidateDBStore {
     public Candidate findById(int id) {
         try (
                 Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate WHERE id = ?")
+                PreparedStatement ps = cn.prepareStatement(FIND_BY_ID_QUERY)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {

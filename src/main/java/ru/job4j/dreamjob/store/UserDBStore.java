@@ -102,7 +102,8 @@ public final class UserDBStore {
         return result;
     }
 
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
+        Optional<User> result = Optional.empty();
         try (
                 Connection cn = pool.getConnection();
                 PreparedStatement ps = cn.prepareStatement(FIND_BY_ID_QUERY)
@@ -110,16 +111,16 @@ public final class UserDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new User(
+                    result = Optional.of(new User(
                             it.getInt("id"),
                             it.getString("email"),
                             it.getString("password")
-                    );
+                    ));
                 }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
-        return null;
+        return result;
     }
 }

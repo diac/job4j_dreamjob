@@ -58,7 +58,7 @@ public final class CandidateDBStore {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return candidates;
     }
@@ -79,7 +79,7 @@ public final class CandidateDBStore {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return candidate;
     }
@@ -97,7 +97,7 @@ public final class CandidateDBStore {
             ps.setInt(5, candidate.getId());
             result = ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return result;
     }
@@ -114,7 +114,7 @@ public final class CandidateDBStore {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.getMessage(), e);
         }
         return null;
     }

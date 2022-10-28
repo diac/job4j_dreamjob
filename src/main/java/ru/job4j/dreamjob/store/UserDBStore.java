@@ -38,6 +38,9 @@ public final class UserDBStore {
 
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
 
+    private static final String FIND_BY_EMAIL_AND_PASSWORD_QUERY
+            = "SELECT * FROM users WHERE email = ? AND password = ?";
+
     private final BasicDataSource pool;
 
     private static final Logger LOG = LogManager.getLogger(UserDBStore.class.getName());
@@ -111,16 +114,39 @@ public final class UserDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    result = Optional.of(new User(
-                            it.getInt("id"),
-                            it.getString("email"),
-                            it.getString("password")
-                    ));
+                    result = Optional.of(userFromResultSet(it));
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOG.error(e.getMessage());
         }
         return result;
+    }
+
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        Optional<User> result = Optional.empty();
+        try (
+                Connection cn = pool.getConnection();
+                PreparedStatement ps = cn.prepareStatement(FIND_BY_EMAIL_AND_PASSWORD_QUERY)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    result = Optional.of(userFromResultSet(it));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+        }
+        return result;
+    }
+
+    private User userFromResultSet(ResultSet it) throws SQLException {
+        return new User(
+                it.getInt("id"),
+                it.getString("email"),
+                it.getString("password")
+        );
     }
 }

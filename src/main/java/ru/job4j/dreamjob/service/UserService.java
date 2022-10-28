@@ -33,4 +33,8 @@ public final class UserService {
     public boolean update(User user) {
         return store.update(user);
     }
+
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
+        return store.findByEmailAndPassword(email, password);
+    }
 }

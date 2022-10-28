@@ -95,7 +95,8 @@ public final class CandidateDBStore {
         return candidate;
     }
 
-    public Candidate update(Candidate candidate) {
+    public boolean update(Candidate candidate) {
+        boolean result = false;
         try (
                 Connection cn = pool.getConnection();
                 PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
@@ -109,11 +110,11 @@ public final class CandidateDBStore {
             }
             ps.setBytes(4, candidate.getPhoto());
             ps.setInt(5, candidate.getId());
-            ps.execute();
+            result = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             LOG.error(e.getMessage());
         }
-        return findById(candidate.getId());
+        return result;
     }
 
     public Candidate findById(int id) {

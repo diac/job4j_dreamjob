@@ -23,8 +23,9 @@ public class CandidateDBStoreTest {
         Candidate candidate = new Candidate(1, "Java Middle");
         store.add(candidate);
         candidate.setName("Java Senior");
-        store.update(candidate);
+        boolean updateSuccess = store.update(candidate);
         Candidate candidateInDb = store.findById(candidate.getId());
+        assertThat(updateSuccess).isTrue();
         assertThat(candidateInDb.getName()).isEqualTo(candidate.getName());
     }
 }

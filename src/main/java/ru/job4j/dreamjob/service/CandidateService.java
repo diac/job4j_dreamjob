@@ -40,7 +40,7 @@ public final class CandidateService {
         return candidate;
     }
 
-    public Candidate update(Candidate candidate) {
+    public boolean update(Candidate candidate) {
         return store.update(candidate);
     }
 }

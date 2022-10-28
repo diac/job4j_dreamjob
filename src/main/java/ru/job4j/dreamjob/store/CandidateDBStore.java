@@ -70,11 +70,7 @@ public final class CandidateDBStore {
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
-            if (candidate.getCity() != null) {
-                ps.setInt(3, candidate.getCity().getId());
-            } else {
-                ps.setNull(3, Types.NULL);
-            }
+            ps.setInt(3, candidate.getCity() != null ? candidate.getCity().getId() : 0);
             ps.setBytes(4, candidate.getPhoto());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
@@ -96,11 +92,7 @@ public final class CandidateDBStore {
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDesc());
-            if (candidate.getCity() != null) {
-                ps.setInt(3, candidate.getCity().getId());
-            } else {
-                ps.setNull(3, Types.NULL);
-            }
+            ps.setInt(3, candidate.getCity() != null ? candidate.getCity().getId() : 0);
             ps.setBytes(4, candidate.getPhoto());
             ps.setInt(5, candidate.getId());
             result = ps.executeUpdate() > 0;

@@ -20,9 +20,9 @@ public final class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private CandidateStore() {
-        add(new Candidate(1, "John Smith", "Extremely capable but emotionally unstable", LocalDateTime.now(), new City(1, "Москва")));
-        add(new Candidate(2, "Bob Brown", "Very disciplined but lacks ambition", LocalDateTime.now(), new City(2, "СПб")));
-        add(new Candidate(3, "Bill Miller", "Mostly unreliable but has some useful connections", LocalDateTime.now(), new City(3, "Екб")));
+        add(new Candidate(1, "John Smith", "Extremely capable but emotionally unstable", LocalDateTime.now(), new City(1, "Москва"), new byte[0]));
+        add(new Candidate(2, "Bob Brown", "Very disciplined but lacks ambition", LocalDateTime.now(), new City(2, "СПб"), new byte[0]));
+        add(new Candidate(3, "Bill Miller", "Mostly unreliable but has some useful connections", LocalDateTime.now(), new City(3, "Екб"), new byte[0]));
     }
 
     public Collection<Candidate> findAll() {

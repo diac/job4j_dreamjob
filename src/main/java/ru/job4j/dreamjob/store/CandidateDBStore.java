@@ -37,7 +37,8 @@ public final class CandidateDBStore {
                             it.getString("name"),
                             it.getString("desc"),
                             it.getTimestamp("created").toLocalDateTime(),
-                            new City(it.getInt("city_id"), null)
+                            new City(it.getInt("city_id"), null),
+                            it.getBytes("photo")
                     ));
                 }
             }
@@ -121,7 +122,8 @@ public final class CandidateDBStore {
                             it.getString("name"),
                             it.getString("desc"),
                             it.getTimestamp("created").toLocalDateTime(),
-                            new City(it.getInt("city_id"), null)
+                            new City(it.getInt("city_id"), null),
+                            it.getBytes("photo")
                     );
                     candidate.setPhoto(it.getBytes("photo"));
                     return candidate;

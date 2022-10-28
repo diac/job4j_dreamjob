@@ -20,12 +20,13 @@ public class Candidate {
         this.name = name;
     }
 
-    public Candidate(int id, String name, String desc, LocalDateTime created, City city) {
+    public Candidate(int id, String name, String desc, LocalDateTime created, City city, byte[] photo) {
         this.id = id;
         this.name = name;
         this.desc = desc;
         this.created = created;
         this.city = city;
+        this.photo = photo;
     }
 
     public int getId() {

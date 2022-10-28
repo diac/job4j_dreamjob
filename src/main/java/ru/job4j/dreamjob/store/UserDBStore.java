@@ -41,7 +41,7 @@ public final class UserDBStore {
                 ));
             }
         } catch (SQLException e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return users;
     }
@@ -68,7 +68,7 @@ public final class UserDBStore {
             }
             result = Optional.of(user);
         } catch (SQLException e) {
-            LOG.warn(e);
+            LOG.error(e);
         }
         return result;
     }
@@ -90,7 +90,7 @@ public final class UserDBStore {
             ps.setInt(3, user.getId());
             ps.execute();
         } catch (SQLException e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return findById(user.getId());
     }
@@ -111,7 +111,7 @@ public final class UserDBStore {
                 }
             }
         } catch (Exception e) {
-            LOG.warn(e.getMessage());
+            LOG.error(e.getMessage());
         }
         return null;
     }

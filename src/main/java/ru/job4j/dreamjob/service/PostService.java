@@ -40,7 +40,7 @@ public final class PostService {
         return post;
     }
 
-    public Post update(Post post) {
+    public boolean update(Post post) {
         return store.update(post);
     }
 }

@@ -23,8 +23,9 @@ public class PostDBStoreTest {
         Post post = new Post(0, "Java Job");
         store.add(post);
         post.setName("Java Job (Updated)");
-        store.update(post);
+        boolean updateSuccess = store.update(post);
         Post postInDb = store.findById(post.getId());
+        assertThat(updateSuccess).isTrue();
         assertThat(postInDb.getName()).isEqualTo(post.getName());
     }
 }

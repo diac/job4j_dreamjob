@@ -86,7 +86,8 @@ public final class PostDBStore {
         return post;
     }
 
-    public Post update(Post post) {
+    public boolean update(Post post) {
+        boolean result = false;
         try (
                 Connection cn = pool.getConnection();
                 PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
@@ -100,11 +101,11 @@ public final class PostDBStore {
                 ps.setNull(4, Types.NULL);
             }
             ps.setInt(5, post.getId());
-            ps.execute();
+            result = (ps.executeUpdate() > 0);
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
-        return findById(post.getId());
+        return result;
     }
 
     public Post findById(int id) {

@@ -69,11 +69,7 @@ public final class PostDBStore {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setBoolean(3, post.isVisible());
-            if (post.getCity() != null) {
-                ps.setInt(4, post.getCity().getId());
-            } else {
-                ps.setNull(4, Types.NULL);
-            }
+            ps.setInt(4, post.getCity() != null ? post.getCity().getId() : 0);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -95,11 +91,7 @@ public final class PostDBStore {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setBoolean(3, post.isVisible());
-            if (post.getCity() != null) {
-                ps.setInt(4, post.getCity().getId());
-            } else {
-                ps.setNull(4, Types.NULL);
-            }
+            ps.setInt(4, post.getCity() != null ? post.getCity().getId() : 0);
             ps.setInt(5, post.getId());
             result = (ps.executeUpdate() > 0);
         } catch (Exception e) {

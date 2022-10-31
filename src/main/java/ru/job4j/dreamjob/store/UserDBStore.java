@@ -59,7 +59,8 @@ public final class UserDBStore {
                 users.add(new User(
                         it.getInt("id"),
                         it.getString("email"),
-                        it.getString("password")
+                        it.getString("password"),
+                        it.getString("name")
                 ));
             }
         } catch (SQLException e) {
@@ -146,7 +147,8 @@ public final class UserDBStore {
         return new User(
                 it.getInt("id"),
                 it.getString("email"),
-                it.getString("password")
+                it.getString("password"),
+                it.getString("name")
         );
     }
 }

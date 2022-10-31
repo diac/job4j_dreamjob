@@ -17,7 +17,7 @@ public final class IndexControl {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
-            user.setEmail("Гость");
+            user.setName("Гость");
         }
         model.addAttribute("user", user);
         return "index";

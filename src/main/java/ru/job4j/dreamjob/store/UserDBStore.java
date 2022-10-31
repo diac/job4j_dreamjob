@@ -23,8 +23,8 @@ public final class UserDBStore {
 
     private static final String ADD_QUERY = """
             INSERT INTO
-                users(email, password)
-            VALUES (?, ?)
+                users(email, password, name)
+            VALUES (?, ?, ?)
             """;
 
     private static final String UPDATE_QUERY = """
@@ -32,7 +32,8 @@ public final class UserDBStore {
                 users
             SET
                 email = ?,
-                password = ?
+                password = ?,
+                name = ?
             WHERE
                 id = ?""";
 
@@ -77,6 +78,7 @@ public final class UserDBStore {
         ) {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -98,7 +100,8 @@ public final class UserDBStore {
         ) {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
-            ps.setInt(3, user.getId());
+            ps.setString(2, user.getName());
+            ps.setInt(4, user.getId());
             result = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             LOG.error(e.getMessage());

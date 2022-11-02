@@ -39,6 +39,6 @@ public class AuthFilter implements Filter {
     }
 
     private boolean allowGuestAccess(String uri) {
-        return ALLOWED_MAPPINGS.stream().anyMatch(mapping -> uri.endsWith(mapping));
+        return ALLOWED_MAPPINGS.stream().anyMatch(uri::endsWith);
     }
 }
